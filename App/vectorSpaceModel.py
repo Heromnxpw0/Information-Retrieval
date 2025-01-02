@@ -11,14 +11,14 @@ class VectorSpaceModel:
         self.vectorizer.fit(self.data.documents)    
         self.vector_space = self.vectorizer.transform(self.data.documents)
         
-    def search(self, query):
+    def search(self, query, head):
         before = time.time()
         query = self.data.process_doc(query)
         query_vector = self.vectorizer.transform([query])
         cosine_similarities = cosine_similarity(query_vector, self.vector_space).flatten()
         most_similar = np.argsort(cosine_similarities)[::-1]
         after = time.time()
-        return most_similar, after - before
+        return most_similar[:head], after - before
 
 
 if __name__ == "__main__":
